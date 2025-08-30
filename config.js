@@ -19,9 +19,13 @@ const SITE_CONFIG = {
     site: {
         name: 'Designated Carers',
         domain: 'https://designatedcarers.com.au', // Replace with your actual domain
-        email: 'info@designatedcarers.com.au',
-        phone: '(03) 1234 5678',
-        address: 'Mornington Peninsula, Victoria'
+        // Placeholder contact information - replace with real details
+        // email: 'info@designatedcarers.com.au',
+        // phone: '(03) 1234 5678',
+        // address: 'Mornington Peninsula, Victoria'
+        email: '[contact-email]',
+        phone: '[contact-phone]',
+        address: '[business-address]'
     }
 };
 
