@@ -36,6 +36,11 @@ designatedCarers/
 │   │   │   └── contact-og.jpg
 │   │   └── logo.png
 │   └── README.md
+├── docs/
+│   ├── README.md
+│   ├── SETUP_INSTRUCTIONS.md
+│   ├── FAVICON_SETUP.md
+│   └── ASSETS_FOLDER_STRUCTURE.md
 ├── index.html
 ├── carers.html
 ├── contact.html
@@ -46,7 +51,7 @@ designatedCarers/
 ├── site.webmanifest
 ├── sitemap.xml
 ├── robots.txt
-└── ... (other files)
+└── README.md
 ```
 
 ## 🎯 What You Need to Do

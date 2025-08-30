@@ -2,31 +2,31 @@
 
 ## Required Favicon Files
 
-You need to create the following favicon files and place them in your website root directory:
+You need to create the following favicon files and place them in the `assets/favicons/` directory:
 
 ### 1. **favicon.ico** (16x16, 32x32, 48x48 pixels)
 - **Purpose**: Main favicon for browsers
 - **Format**: ICO format
 - **Sizes**: Multiple sizes in one file (16x16, 32x32, 48x48)
-- **Location**: `/favicon.ico`
+- **Location**: `assets/favicons/favicon.ico`
 
 ### 2. **favicon-16x16.png** (16x16 pixels)
 - **Purpose**: Small favicon for modern browsers
 - **Format**: PNG format
 - **Size**: 16x16 pixels
-- **Location**: `/favicon-16x16.png`
+- **Location**: `assets/favicons/favicon-16x16.png`
 
 ### 3. **favicon-32x32.png** (32x32 pixels)
 - **Purpose**: Standard favicon for modern browsers
 - **Format**: PNG format
 - **Size**: 32x32 pixels
-- **Location**: `/favicon-32x32.png`
+- **Location**: `assets/favicons/favicon-32x32.png`
 
 ### 4. **apple-touch-icon.png** (180x180 pixels)
 - **Purpose**: Icon for iOS devices when adding to home screen
 - **Format**: PNG format
 - **Size**: 180x180 pixels
-- **Location**: `/apple-touch-icon.png`
+- **Location**: `assets/favicons/apple-touch-icon.png`
 
 ## How to Create Favicons
 
@@ -34,7 +34,7 @@ You need to create the following favicon files and place them in your website ro
 1. Go to [favicon.io](https://favicon.io/) or [realfavicongenerator.net](https://realfavicongenerator.net/)
 2. Upload your logo/icon image
 3. Download the generated favicon package
-4. Extract and upload the files to your website root
+4. Extract and upload the files to `assets/favicons/`
 
 ### Option 2: Design Software
 1. Create a square logo/icon (minimum 512x512 pixels)
@@ -51,16 +51,24 @@ If you don't have a logo yet, create a simple favicon using your brand color (#2
 
 ## File Structure After Setup
 
-Your website root should contain:
+Your website should have this organized structure:
 ```
 designatedCarers/
-├── favicon.ico
-├── favicon-16x16.png
-├── favicon-32x32.png
-├── apple-touch-icon.png
-├── site.webmanifest
-├── robots.txt
-├── sitemap.xml
+├── assets/
+│   ├── favicons/
+│   │   ├── favicon.ico
+│   │   ├── favicon-16x16.png
+│   │   ├── favicon-32x32.png
+│   │   └── apple-touch-icon.png
+│   └── images/
+│       ├── carers/
+│       ├── services/
+│       └── og/
+├── docs/
+│   ├── README.md
+│   ├── SETUP_INSTRUCTIONS.md
+│   ├── FAVICON_SETUP.md
+│   └── ASSETS_FOLDER_STRUCTURE.md
 ├── index.html
 ├── carers.html
 ├── contact.html
@@ -77,8 +85,8 @@ After uploading the files:
 
 ## Important Notes
 
-- All favicon files must be in the root directory of your website
-- The files are already referenced in your HTML files
+- All favicon files are now organized in the `assets/favicons/` directory
+- The files are already referenced in your HTML files with the correct paths
 - The web manifest (site.webmanifest) is already configured
 - Your brand color (#20ce88) is set as the theme color
 
@@ -88,6 +96,6 @@ If you want to get started quickly:
 1. Create a simple 512x512 pixel square image with your brand color (#20ce88)
 2. Add a simple "DC" text or heart icon in white
 3. Use an online favicon generator to create all required sizes
-4. Upload the generated files to your website root
+4. Upload the generated files to `assets/favicons/`
 
 This will give you a professional-looking favicon that matches your brand!

@@ -90,6 +90,11 @@ designatedCarers/
 │       ├── carers/        # Carer profile photos
 │       ├── services/      # Service-related images
 │       └── og/            # Social media sharing images
+├── docs/                   # Documentation folder
+│   ├── README.md          # Documentation index
+│   ├── SETUP_INSTRUCTIONS.md # Configuration guide
+│   ├── FAVICON_SETUP.md   # Favicon setup guide
+│   └── ASSETS_FOLDER_STRUCTURE.md # Assets organization guide
 ├── index.html              # Homepage
 ├── carers.html             # Carers listing and profiles
 ├── contact.html            # Contact information and form
@@ -100,10 +105,7 @@ designatedCarers/
 ├── site.webmanifest        # PWA manifest
 ├── sitemap.xml             # XML sitemap
 ├── robots.txt              # Search engine instructions
-├── README.md               # Project documentation
-├── SETUP_INSTRUCTIONS.md   # Configuration guide
-├── FAVICON_SETUP.md        # Favicon setup guide
-└── ASSETS_FOLDER_STRUCTURE.md # Assets organization guide
+└── README.md               # Project documentation
 ```
 
 ## Technologies Used
@@ -129,9 +131,16 @@ designatedCarers/
    - Open `config.js` and update your Google Analytics ID and reCAPTCHA site key
    - Update your domain and contact information
    - All settings are automatically applied across all pages
-3. Follow the detailed setup instructions in `SETUP_INSTRUCTIONS.md`
+3. Follow the detailed setup instructions in `docs/SETUP_INSTRUCTIONS.md`
 4. Open `index.html` in a web browser
 5. Navigate through the different pages to explore functionality
+
+## Documentation
+
+All setup guides and documentation are organized in the `docs/` folder:
+- **`docs/SETUP_INSTRUCTIONS.md`** - Complete configuration guide
+- **`docs/FAVICON_SETUP.md`** - Favicon creation and setup
+- **`docs/ASSETS_FOLDER_STRUCTURE.md`** - Image organization guide
 
 ## GitHub Pages Deployment
 
