@@ -18,7 +18,7 @@ const SITE_CONFIG = {
     // Site Information
     site: {
         name: 'Designated Carers',
-        domain: 'https://designatedcarers.com.au', // Replace with your actual domain
+        domain: 'https://will-jansen.github.io/designatedCarers', // GitHub Pages URL
         // Placeholder contact information - replace with real details
         // email: 'info@designatedcarers.com.au',
         // phone: '(03) 1234 5678',

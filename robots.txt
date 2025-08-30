@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://designatedcarers.com.au/sitemap.xml
+Sitemap: https://will-jansen.github.io/designatedCarers/sitemap.xml
 
 # Allow all search engines to crawl the site
 # Block access to configuration files
