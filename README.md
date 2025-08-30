@@ -84,6 +84,12 @@ A modern, accessible website for professional caregiving services in Mornington 
 
 ```
 designatedCarers/
+├── assets/                 # Organized assets folder
+│   ├── favicons/          # Favicon files
+│   └── images/            # All website images
+│       ├── carers/        # Carer profile photos
+│       ├── services/      # Service-related images
+│       └── og/            # Social media sharing images
 ├── index.html              # Homepage
 ├── carers.html             # Carers listing and profiles
 ├── contact.html            # Contact information and form
@@ -91,8 +97,13 @@ designatedCarers/
 ├── script.js               # JavaScript functionality
 ├── config.js               # Centralized configuration
 ├── site-utils.js           # Site utilities and dynamic loading
+├── site.webmanifest        # PWA manifest
+├── sitemap.xml             # XML sitemap
+├── robots.txt              # Search engine instructions
 ├── README.md               # Project documentation
-└── SETUP_INSTRUCTIONS.md   # Configuration guide
+├── SETUP_INSTRUCTIONS.md   # Configuration guide
+├── FAVICON_SETUP.md        # Favicon setup guide
+└── ASSETS_FOLDER_STRUCTURE.md # Assets organization guide
 ```
 
 ## Technologies Used

@@ -196,7 +196,7 @@ const carersData = [
         id: 1,
         name: "Sarah Johnson",
         title: "Senior Care Specialist",
-        image: "sarah-johnson.jpg",
+        image: "assets/images/carers/sarah-johnson.jpg",
         bio: "With over 8 years of experience in caregiving, Sarah specializes in providing compassionate support to women and children. She holds certifications in counselling and nutrition.",
         services: [
             { name: "Transportation", description: "Safe and reliable transport for appointments and outings" },
@@ -220,7 +220,7 @@ const carersData = [
         id: 2,
         name: "Emma Williams",
         title: "Nutrition & Wellness Coach",
-        image: "emma-williams.jpg",
+        image: "assets/images/carers/emma-williams.jpg",
         bio: "Emma is a qualified nutritionist and personal trainer with a passion for helping women and children achieve their health and wellness goals through proper nutrition and exercise.",
         services: [
             { name: "Nutrition", description: "Meal planning and nutritional guidance" },
@@ -244,7 +244,7 @@ const carersData = [
         id: 3,
         name: "Lisa Chen",
         title: "Childcare Specialist",
-        image: "lisa-chen.jpg",
+        image: "assets/images/carers/lisa-chen.jpg",
         bio: "Lisa has dedicated her career to supporting children and their families. She specializes in developmental support, educational activities, and creating safe, nurturing environments.",
         services: [
             { name: "Childcare", description: "Professional childcare and developmental support" },
@@ -268,7 +268,7 @@ const carersData = [
         id: 4,
         name: "Maria Rodriguez",
         title: "Holistic Care Provider",
-        image: "maria-rodriguez.jpg",
+        image: "assets/images/carers/maria-rodriguez.jpg",
         bio: "Maria brings a holistic approach to caregiving, combining traditional care methods with modern wellness practices. She speaks multiple languages and understands diverse cultural needs.",
         services: [
             { name: "Counselling", description: "Emotional support and mental health guidance" },
@@ -292,7 +292,7 @@ const carersData = [
         id: 5,
         name: "Jennifer Taylor",
         title: "Senior Support Specialist",
-        image: "jennifer-taylor.jpg",
+        image: "assets/images/carers/jennifer-taylor.jpg",
         bio: "Jennifer specializes in supporting senior women with dignity and respect. She has extensive experience in mobility assistance, medication management, and companionship.",
         services: [
             { name: "Mobility Support", description: "Assistance with movement and daily activities" },
@@ -316,7 +316,7 @@ const carersData = [
         id: 6,
         name: "Amanda Foster",
         title: "Family Support Coordinator",
-        image: "amanda-foster.jpg",
+        image: "assets/images/carers/amanda-foster.jpg",
         bio: "Amanda works with entire families to provide comprehensive support. She coordinates care plans, manages schedules, and ensures all family members receive appropriate care.",
         services: [
             { name: "Family Coordination", description: "Comprehensive family support and planning" },
