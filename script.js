@@ -1,3 +1,154 @@
+// Global variables for enhanced functionality
+let selectedFilters = new Set();
+let recaptchaVerified = false;
+let currentCalendarWeek = 0;
+
+// Screen reader announcement function
+function announceToScreenReader(message) {
+    const announcement = document.getElementById('sr-announcements');
+    if (announcement) {
+        announcement.textContent = message;
+        // Clear after announcement
+        setTimeout(() => {
+            announcement.textContent = '';
+        }, 1000);
+    }
+}
+
+// reCaptcha callbacks
+function onRecaptchaSuccess(token) {
+    recaptchaVerified = true;
+    const submitBtn = document.getElementById('contact-submit-btn');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+    }
+    const errorDiv = document.getElementById('recaptcha-error');
+    if (errorDiv) {
+        errorDiv.textContent = '';
+    }
+    announceToScreenReader('reCAPTCHA verification completed successfully');
+}
+
+function onRecaptchaExpired() {
+    recaptchaVerified = false;
+    const submitBtn = document.getElementById('contact-submit-btn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+    }
+    announceToScreenReader('reCAPTCHA verification expired. Please complete it again.');
+}
+
+// Booking form reCaptcha callbacks
+function onBookingRecaptchaSuccess(token) {
+    const submitBtn = document.getElementById('booking-submit-btn');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+    }
+    const errorDiv = document.getElementById('booking-recaptcha-error');
+    if (errorDiv) {
+        errorDiv.textContent = '';
+    }
+    announceToScreenReader('reCAPTCHA verification completed successfully');
+}
+
+function onBookingRecaptchaExpired() {
+    const submitBtn = document.getElementById('booking-submit-btn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+    }
+    announceToScreenReader('reCAPTCHA verification expired. Please complete it again.');
+}
+
+// Calendar generation function
+function generateCalendarDays(carer, weekOffset) {
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    
+    return days.map((day, index) => {
+        const available = carer.availability[day];
+        return `
+            <div class="calendar-day ${available ? 'available' : 'unavailable'}" 
+                 data-day="${day}" 
+                 data-week="${weekOffset}"
+                 ${available ? 'tabindex="0" role="button" aria-label="Select ' + day + '"' : 'aria-label="' + day + ' - not available"'}
+                 ${available ? '' : 'aria-disabled="true"'}>
+                <span class="day-name">${dayNames[index]}</span>
+                <span class="day-number">${index + 1 + (weekOffset * 7)}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+// Mobile calendar navigation
+function setupMobileCalendarNavigation(modal, carer) {
+    const prevBtn = modal.querySelector('#prev-week');
+    const nextBtn = modal.querySelector('#next-week');
+    const weekInfo = modal.querySelector('#week-info');
+    const calendarGrid = modal.querySelector('#calendar-grid');
+    
+    function updateCalendar() {
+        const days = calendarGrid.querySelectorAll('.calendar-day:not(.calendar-day-header)');
+        days.forEach(day => day.remove());
+        
+        const newDays = generateCalendarDays(carer, currentCalendarWeek);
+        calendarGrid.insertAdjacentHTML('beforeend', newDays);
+        
+        weekInfo.textContent = `Week ${currentCalendarWeek + 1}`;
+        
+        // Re-setup calendar day interactions
+        setupCalendarDayInteractions(modal);
+        
+        announceToScreenReader(`Showing week ${currentCalendarWeek + 1} of availability`);
+    }
+    
+    prevBtn.addEventListener('click', () => {
+        if (currentCalendarWeek > 0) {
+            currentCalendarWeek--;
+            updateCalendar();
+        }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        currentCalendarWeek++;
+        updateCalendar();
+    });
+    
+    // Touch/swipe support for mobile
+    let startX = 0;
+    let startY = 0;
+    
+    calendarGrid.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
+    
+    calendarGrid.addEventListener('touchend', (e) => {
+        if (!startX || !startY) return;
+        
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+        
+        // Only trigger if horizontal swipe is more significant than vertical
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0 && currentCalendarWeek < 3) {
+                // Swipe left - next week
+                currentCalendarWeek++;
+                updateCalendar();
+            } else if (diffX < 0 && currentCalendarWeek > 0) {
+                // Swipe right - previous week
+                currentCalendarWeek--;
+                updateCalendar();
+            }
+        }
+        
+        startX = 0;
+        startY = 0;
+    });
+}
+
 // Mobile Navigation Toggle
 document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.querySelector('.nav-toggle');
@@ -253,6 +404,8 @@ function setupFilters() {
     allFilter.className = 'filter-btn active';
     allFilter.textContent = 'All Services';
     allFilter.setAttribute('data-filter', 'all');
+    allFilter.setAttribute('aria-pressed', 'true');
+    allFilter.setAttribute('role', 'button');
     filtersContainer.appendChild(allFilter);
 
     // Add service filters
@@ -261,36 +414,81 @@ function setupFilters() {
         filterBtn.className = 'filter-btn';
         filterBtn.textContent = service;
         filterBtn.setAttribute('data-filter', service);
+        filterBtn.setAttribute('aria-pressed', 'false');
+        filterBtn.setAttribute('role', 'button');
         filtersContainer.appendChild(filterBtn);
     });
 
     // Add event listeners
     filtersContainer.addEventListener('click', function(e) {
         if (e.target.classList.contains('filter-btn')) {
-            // Update active filter
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            e.target.classList.add('active');
-
-            // Filter carers
             const filter = e.target.getAttribute('data-filter');
-            filterCarers(filter);
+            
+            if (filter === 'all') {
+                // Clear all filters and show all carers
+                selectedFilters.clear();
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+                e.target.classList.add('active');
+                e.target.setAttribute('aria-pressed', 'true');
+                announceToScreenReader('All services filter selected. Showing all carers.');
+            } else {
+                // Toggle individual filter
+                const allBtn = document.querySelector('[data-filter="all"]');
+                allBtn.classList.remove('active');
+                allBtn.setAttribute('aria-pressed', 'false');
+                
+                if (selectedFilters.has(filter)) {
+                    selectedFilters.delete(filter);
+                    e.target.classList.remove('active');
+                    e.target.setAttribute('aria-pressed', 'false');
+                    announceToScreenReader(`${filter} filter removed`);
+                } else {
+                    selectedFilters.add(filter);
+                    e.target.classList.add('active');
+                    e.target.setAttribute('aria-pressed', 'true');
+                    announceToScreenReader(`${filter} filter added`);
+                }
+                
+                // If no filters selected, show all
+                if (selectedFilters.size === 0) {
+                    allBtn.classList.add('active');
+                    allBtn.setAttribute('aria-pressed', 'true');
+                    announceToScreenReader('No filters selected. Showing all carers.');
+                }
+            }
+
+            // Filter carers based on selected filters
+            filterCarers();
         }
     });
 }
 
-function filterCarers(filter) {
+function filterCarers() {
     let filteredCarers = carersData;
 
-    if (filter !== 'all') {
+    if (selectedFilters.size > 0) {
         filteredCarers = carersData.filter(carer => 
-            carer.services.some(service => service.name === filter)
+            Array.from(selectedFilters).every(filter => 
+                carer.services.some(service => service.name === filter)
+            )
         );
     }
 
     renderCarers(filteredCarers);
     setupCarerCards();
+    
+    // Announce results to screen readers
+    const count = filteredCarers.length;
+    if (count === 0) {
+        announceToScreenReader('No carers found matching the selected filters');
+    } else if (count === 1) {
+        announceToScreenReader('1 carer found matching the selected filters');
+    } else {
+        announceToScreenReader(`${count} carers found matching the selected filters`);
+    }
 }
 
 function setupCarerCards() {
@@ -405,21 +603,40 @@ function showBookingModal(carer) {
                 <div class="booking-form">
                     <div class="availability-calendar">
                         <h4>Select Available Date</h4>
-                        <div class="calendar-grid">
-                            <div class="calendar-day-header">Mon</div>
-                            <div class="calendar-day-header">Tue</div>
-                            <div class="calendar-day-header">Wed</div>
-                            <div class="calendar-day-header">Thu</div>
-                            <div class="calendar-day-header">Fri</div>
-                            <div class="calendar-day-header">Sat</div>
-                            <div class="calendar-day-header">Sun</div>
-                            ${Object.entries(carer.availability).map(([day, available], index) => `
-                                <div class="calendar-day ${available ? 'available' : ''}" 
-                                     data-day="${day}" 
-                                     ${available ? 'tabindex="0" role="button"' : ''}>
-                                    ${day.charAt(0).toUpperCase() + day.slice(1)}
-                                </div>
-                            `).join('')}
+                        <div class="calendar-navigation">
+                            <button class="calendar-nav-btn" id="prev-week" aria-label="Previous week">
+                                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <span class="calendar-week-info" id="week-info">Week 1</span>
+                            <button class="calendar-nav-btn" id="next-week" aria-label="Next week">
+                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="calendar-container">
+                            <div class="calendar-grid" id="calendar-grid">
+                                <div class="calendar-day-header">Mon</div>
+                                <div class="calendar-day-header">Tue</div>
+                                <div class="calendar-day-header">Wed</div>
+                                <div class="calendar-day-header">Thu</div>
+                                <div class="calendar-day-header">Fri</div>
+                                <div class="calendar-day-header">Sat</div>
+                                <div class="calendar-day-header">Sun</div>
+                                ${generateCalendarDays(carer, 0)}
+                            </div>
+                        </div>
+                        <div class="calendar-legend">
+                            <div class="legend-item">
+                                <span class="legend-color available"></span>
+                                <span>Available</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color unavailable"></span>
+                                <span>Unavailable</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color selected"></span>
+                                <span>Selected</span>
+                            </div>
                         </div>
                     </div>
 
@@ -478,7 +695,13 @@ function showBookingModal(carer) {
                                       placeholder="Any specific requirements or additional information..."></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-large">
+                        <!-- reCaptcha for booking form -->
+                        <div class="form-group">
+                            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY" data-callback="onBookingRecaptchaSuccess" data-expired-callback="onBookingRecaptchaExpired"></div>
+                            <div id="booking-recaptcha-error" class="field-error" role="alert" aria-live="polite"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-large" id="booking-submit-btn" disabled>
                             Submit Booking Request
                         </button>
                     </form>
@@ -492,6 +715,7 @@ function showBookingModal(carer) {
 
     // Calendar functionality
     setupCalendar(modal, carer);
+    setupMobileCalendarNavigation(modal, carer);
 
     // Form submission
     const form = modal.querySelector('#bookingForm');
@@ -517,20 +741,35 @@ function showBookingModal(carer) {
 }
 
 function setupCalendar(modal, carer) {
+    setupCalendarDayInteractions(modal);
+}
+
+function setupCalendarDayInteractions(modal) {
     const calendarDays = modal.querySelectorAll('.calendar-day.available');
     
     calendarDays.forEach(day => {
+        // Remove existing event listeners
+        day.replaceWith(day.cloneNode(true));
+    });
+    
+    // Re-query after cloning
+    const newCalendarDays = modal.querySelectorAll('.calendar-day.available');
+    
+    newCalendarDays.forEach(day => {
         day.addEventListener('click', function() {
             // Remove previous selection
             modal.querySelectorAll('.calendar-day.selected').forEach(selected => {
                 selected.classList.remove('selected');
+                selected.setAttribute('aria-pressed', 'false');
             });
             
             // Add selection to clicked day
             this.classList.add('selected');
+            this.setAttribute('aria-pressed', 'true');
             
             // Update form with selected day
             const selectedDay = this.getAttribute('data-day');
+            const selectedWeek = this.getAttribute('data-week');
             const form = modal.querySelector('#bookingForm');
             if (!form.querySelector('input[name="selectedDay"]')) {
                 const hiddenInput = document.createElement('input');
@@ -538,7 +777,16 @@ function setupCalendar(modal, carer) {
                 hiddenInput.name = 'selectedDay';
                 form.appendChild(hiddenInput);
             }
+            if (!form.querySelector('input[name="selectedWeek"]')) {
+                const weekInput = document.createElement('input');
+                weekInput.type = 'hidden';
+                weekInput.name = 'selectedWeek';
+                form.appendChild(weekInput);
+            }
             form.querySelector('input[name="selectedDay"]').value = selectedDay;
+            form.querySelector('input[name="selectedWeek"]').value = selectedWeek;
+            
+            announceToScreenReader(`${selectedDay} selected for booking`);
         });
 
         // Keyboard support
@@ -604,6 +852,16 @@ function initializeContactForm() {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
+        // Validate reCaptcha
+        if (!recaptchaVerified) {
+            const errorDiv = document.getElementById('recaptcha-error');
+            if (errorDiv) {
+                errorDiv.textContent = 'Please complete the reCAPTCHA verification.';
+            }
+            announceToScreenReader('Please complete the reCAPTCHA verification');
+            return;
+        }
+        
         const formData = new FormData(this);
         const contactData = {
             name: formData.get('name'),
@@ -624,7 +882,15 @@ function initializeContactForm() {
             alert('Thank you for your message! We\'ll get back to you within 24 hours.');
             this.reset();
             submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            submitBtn.disabled = true; // Keep disabled until reCaptcha is completed again
+            recaptchaVerified = false;
+            
+            // Reset reCaptcha
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+            }
+            
+            announceToScreenReader('Message sent successfully. We will contact you within 24 hours.');
             
             // In a real application, you would send this data to your server
             console.log('Contact form submitted:', contactData);

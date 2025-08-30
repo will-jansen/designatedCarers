@@ -828,6 +828,104 @@ p {
     text-align: center;
 }
 
+/* Enhanced Calendar Navigation */
+.calendar-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.calendar-nav-btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.calendar-nav-btn:hover,
+.calendar-nav-btn:focus {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.calendar-nav-btn:disabled {
+    background-color: var(--text-light);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.calendar-week-info {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.calendar-container {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+}
+
+.calendar-day.unavailable {
+    background-color: var(--background-light);
+    color: var(--text-light);
+    cursor: not-allowed;
+}
+
+.day-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.day-number {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.legend-color.available {
+    background-color: var(--primary-color);
+}
+
+.legend-color.unavailable {
+    background-color: var(--background-light);
+    border: 1px solid var(--border-color);
+}
+
+.legend-color.selected {
+    background-color: var(--accent-color);
+}
+
 .booking-form {
     margin-top: 1.5rem;
 }
@@ -1032,6 +1130,27 @@ p {
     .calendar-day {
         padding: 0.5rem;
         min-height: 40px;
+    }
+
+    .calendar-navigation {
+        padding: 0 0.5rem;
+    }
+
+    .calendar-nav-btn {
+        width: 35px;
+        height: 35px;
+    }
+
+    .calendar-week-info {
+        font-size: 1rem;
+    }
+
+    .calendar-legend {
+        gap: 0.5rem;
+    }
+
+    .legend-item {
+        font-size: 0.8rem;
     }
 }
 
