@@ -25,21 +25,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Analytics -->
-   <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Z7R6ZNN8K"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-3Z7R6ZNN8K');
-    </script>
-    
-    <!-- Google reCaptcha -->
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lf-dbgrAAAAAKla5K0Sl0ebwlB0vw7QXD9rB-YM"></script>
+    <!-- Site Configuration and Utilities -->
+    <script src="config.js"></script>
+    <script src="site-utils.js"></script>
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
@@ -190,7 +180,7 @@
                         
                         <!-- reCaptcha -->
                         <div class="form-group">
-                            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
+                            <div class="g-recaptcha" data-sitekey="PLACEHOLDER_SITE_KEY" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
                             <div id="recaptcha-error" class="field-error" role="alert" aria-live="polite"></div>
                         </div>
                         

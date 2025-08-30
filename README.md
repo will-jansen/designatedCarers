@@ -89,6 +89,8 @@ designatedCarers/
 ├── contact.html            # Contact information and form
 ├── styles.css              # Main stylesheet
 ├── script.js               # JavaScript functionality
+├── config.js               # Centralized configuration
+├── site-utils.js           # Site utilities and dynamic loading
 ├── README.md               # Project documentation
 └── SETUP_INSTRUCTIONS.md   # Configuration guide
 ```
@@ -112,12 +114,13 @@ designatedCarers/
 ## Getting Started
 
 1. Clone or download the repository
-2. Follow the setup instructions in `SETUP_INSTRUCTIONS.md` to configure:
-   - Google reCAPTCHA keys
-   - Google Analytics tracking ID
-   - Domain URLs and image assets
-3. Open `index.html` in a web browser
-4. Navigate through the different pages to explore functionality
+2. **Configure your site in one place:**
+   - Open `config.js` and update your Google Analytics ID and reCAPTCHA site key
+   - Update your domain and contact information
+   - All settings are automatically applied across all pages
+3. Follow the detailed setup instructions in `SETUP_INSTRUCTIONS.md`
+4. Open `index.html` in a web browser
+5. Navigate through the different pages to explore functionality
 
 ## GitHub Pages Deployment
 
@@ -130,6 +133,12 @@ This website is designed to work seamlessly with GitHub Pages:
 
 ## Customization
 
+### Centralized Configuration
+All site configuration is centralized in `config.js`:
+- Google Analytics and reCAPTCHA settings
+- Site information (name, domain, contact details)
+- Enable/disable features
+
 ### Brand Colors
 The primary brand color (#20ce88) is defined in CSS custom properties and can be easily modified in the `:root` section of `styles.css`.
 
@@ -137,7 +146,7 @@ The primary brand color (#20ce88) is defined in CSS custom properties and can be
 Sample carer data is included in `script.js`. To add real carer information, modify the `carersData` array with actual caregiver profiles.
 
 ### Contact Information
-Update contact details in the footer and contact page sections of each HTML file.
+Update contact details in `config.js` - they will be automatically applied across all pages.
 
 ## Features in Detail
 

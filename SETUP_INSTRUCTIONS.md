@@ -2,59 +2,84 @@
 
 ## Required Configuration
 
-### 1. Google reCAPTCHA Setup
+### 1. Centralized Configuration Setup
 
-To enable form security, you need to set up Google reCAPTCHA:
+**All configuration is now centralized in one file!** Simply update `config.js` with your settings:
+
+1. **Open `config.js`** and update the following values:
+
+```javascript
+const SITE_CONFIG = {
+    // Google Analytics Configuration
+    analytics: {
+        measurementId: 'G-3Z7R6ZNN8K', // Replace with your Google Analytics Measurement ID
+        enabled: true // Set to false to disable analytics
+    },
+    
+    // Google reCAPTCHA Configuration
+    recaptcha: {
+        siteKey: '6Lf-dbgrAAAAAKla5K0Sl0ebwlB0vw7QXD9rB-YM', // Replace with your reCAPTCHA Site Key
+        enabled: true, // Set to false to disable reCAPTCHA
+        version: 'enterprise' // 'v2' or 'enterprise'
+    },
+    
+    // Site Information
+    site: {
+        name: 'Designated Carers',
+        domain: 'https://designatedcarers.com.au', // Replace with your actual domain
+        email: 'info@designatedcarers.com.au',
+        phone: '(03) 1234 5678',
+        address: 'Mornington Peninsula, Victoria'
+    }
+};
+```
+
+### 2. Google reCAPTCHA Setup
 
 1. **Get reCAPTCHA Keys:**
    - Go to [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin)
    - Create a new site
-   - Choose reCAPTCHA v2 ("I'm not a robot" Checkbox)
+   - Choose reCAPTCHA v2 ("I'm not a robot" Checkbox) or Enterprise
    - Add your domain (e.g., `designatedcarers.com.au` or `yourusername.github.io`)
    - Copy the Site Key and Secret Key
 
-2. **Update the Website:**
-   - Replace `YOUR_RECAPTCHA_SITE_KEY` in all HTML files with your actual Site Key
-   - Files to update:
-     - `contact.html` (line 191)
-     - `script.js` (line 589)
+2. **Update Configuration:**
+   - Open `config.js`
+   - Replace the `siteKey` value with your actual Site Key
+   - Set `version` to 'v2' or 'enterprise' based on your choice
 
 3. **Backend Integration (when ready):**
    - Use the Secret Key on your server to verify reCAPTCHA responses
    - Implement server-side validation for form submissions
 
-### 2. Google Analytics Setup
-
-To track website analytics:
+### 3. Google Analytics Setup
 
 1. **Get Google Analytics ID:**
    - Go to [Google Analytics](https://analytics.google.com/)
    - Create a new property for your website
    - Copy your Measurement ID (format: G-XXXXXXXXXX)
 
-2. **Update the Website:**
-   - Replace `GA_MEASUREMENT_ID` in all HTML files with your actual Measurement ID
-   - Files to update:
-     - `index.html` (lines 105, 110)
-     - `carers.html` (lines 32, 37)
-     - `contact.html` (lines 32, 37)
+2. **Update Configuration:**
+   - Open `config.js`
+   - Replace the `measurementId` value with your actual Measurement ID
 
-### 3. Domain Configuration
+### 4. Domain Configuration
 
-Update the following URLs in the HTML files to match your actual domain:
+Update the domain in `config.js`:
 
-1. **Open Graph URLs:**
-   - Replace `https://designatedcarers.com.au/` with your actual domain
-   - Files to update:
+1. **Update Site Domain:**
+   - Open `config.js`
+   - Replace `https://designatedcarers.com.au` with your actual domain
+   - This will be used for Open Graph URLs and structured data
+
+2. **Update HTML Meta Tags (Optional):**
+   - The system will automatically use the domain from config.js
+   - You can manually update Open Graph URLs in HTML files if needed:
      - `index.html` (lines 15, 21)
      - `carers.html` (lines 13, 19)
      - `contact.html` (lines 12, 18)
 
-2. **Structured Data:**
-   - Update the organization URL in `index.html` (line 34)
-   - Update logo and image URLs (lines 35, 18, 25)
-
-### 4. Image Assets
+### 5. Image Assets
 
 Create and add the following images to an `images/` folder:
 
@@ -63,14 +88,13 @@ Create and add the following images to an `images/` folder:
 - `contact-og.jpg` - Contact page social sharing image
 - `logo.png` - Company logo for structured data
 
-### 5. Content Customization
+### 6. Content Customization
 
 Update the following with your actual business information:
 
-1. **Contact Information:**
-   - Phone number: `(03) 1234 5678`
-   - Email: `info@designatedcarers.com.au`
-   - Address: Update to your actual business address
+1. **Contact Information in `config.js`:**
+   - Update `email`, `phone`, and `address` in the site configuration
+   - These values will be used across all pages
 
 2. **Carer Data:**
    - Replace sample carer data in `script.js` with real caregiver profiles

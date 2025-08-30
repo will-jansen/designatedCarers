@@ -3,6 +3,14 @@ let selectedFilters = new Set();
 let recaptchaVerified = false;
 let currentCalendarWeek = 0;
 
+// Get configuration from centralized config
+function getConfig() {
+    return window.SITE_CONFIG || {
+        recaptcha: { enabled: true, siteKey: 'PLACEHOLDER_SITE_KEY' },
+        analytics: { enabled: true }
+    };
+}
+
 // Screen reader announcement function
 function announceToScreenReader(message) {
     const announcement = document.getElementById('sr-announcements');
@@ -697,7 +705,7 @@ function showBookingModal(carer) {
 
                         <!-- reCaptcha for booking form -->
                         <div class="form-group">
-                            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY" data-callback="onBookingRecaptchaSuccess" data-expired-callback="onBookingRecaptchaExpired"></div>
+                            <div class="g-recaptcha" data-sitekey="PLACEHOLDER_SITE_KEY" data-callback="onBookingRecaptchaSuccess" data-expired-callback="onBookingRecaptchaExpired"></div>
                             <div id="booking-recaptcha-error" class="field-error" role="alert" aria-live="polite"></div>
                         </div>
 
@@ -852,8 +860,10 @@ function initializeContactForm() {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Validate reCaptcha
-        if (!recaptchaVerified) {
+        const config = getConfig();
+        
+        // Validate reCaptcha if enabled
+        if (config.recaptcha.enabled && !recaptchaVerified) {
             const errorDiv = document.getElementById('recaptcha-error');
             if (errorDiv) {
                 errorDiv.textContent = 'Please complete the reCAPTCHA verification.';
